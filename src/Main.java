@@ -6,8 +6,7 @@ public class Main {
         if (connection != null) {
             System.out.println("Connection to the database established successfully and populated with sample data!");
             // PUT CRUD OPERATION HERE
-            AddBook addBook = new AddBook();
-            addBook.execute();
+            new AddBookGUI();
         } else {
             System.out.println("Failed to connect to the database.");
         }
