@@ -5,16 +5,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:sqlserver://localhost:1433"; // Use localhost
+    // Windows Authentication uses Integrated Security
+    private static final String URL = "jdbc:sqlserver://localhost:1433;integratedSecurity=true;encrypt=false"; // Use Windows authentication
     private static final String DB_NAME = "LibraryDB"; // Replace with your DB name
-    private static final String USER = "sa"; // SQL Server username
-    private static final String PASSWORD = "P@ssw0rd";
 
     public static Connection getConnection() {
         Connection connection = null;
         try {
             // Connect to the SQL Server without a specific database
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(URL);
             Statement statement = connection.createStatement();
 
             // SQL to create the database if it does not exist
@@ -30,7 +29,7 @@ public class DatabaseConnection {
             connection.close(); // Close the previous connection
 
             // Create a new connection to the specific database
-            connection = DriverManager.getConnection(dbURL, USER, PASSWORD);
+            connection = DriverManager.getConnection(dbURL);
             statement = connection.createStatement(); // Recreate the statement for the new connection
 
             // Create the books table if it does not exist
@@ -67,7 +66,6 @@ public class DatabaseConnection {
             populateDatabase(statement);
         }
     }
-
 
     private static void populateDatabase(Statement statement) throws SQLException {
         // SQL to insert sample records into the books table
