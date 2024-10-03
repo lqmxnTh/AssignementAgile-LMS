@@ -79,6 +79,36 @@ public class AddBookGUI extends JFrame {
         setVisible(true);  // Make the window visible
     }
 
+    // Method to validate ISBN
+    public boolean isValidISBN(String isbn) {
+        return isbn != null && isbn.matches("[0-9-]+");
+    }
+
+    // Method to validate Title
+    public boolean isValidTitle(String title) {
+        return title != null && title.matches("[a-zA-Z0-9' ]+");
+    }
+
+    // Method to validate Author
+    public boolean isValidAuthor(String author) {
+        return author != null && author.matches("[a-zA-Z' ]+");
+    }
+
+    // Method to validate Genre
+    public boolean isValidGenre(String genre) {
+        return genre != null && genre.matches("[a-zA-Z,' ]+");
+    }
+
+    // Method to validate Stock
+    public boolean isValidStock(String stock) {
+        try {
+            Integer.parseInt(stock);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     // Method to handle adding the book to the database
     private void addBookToDatabase() {
         try {
@@ -92,12 +122,35 @@ public class AddBookGUI extends JFrame {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String publishedYear = dateFormat.format(publishedYearPicker.getDate());
 
-            int stock = Integer.parseInt(stockField.getText());
+            String stockStr = stockField.getText();
+
+            // Validate inputs
+            if (!isValidISBN(isbn)) {
+                throw new Exception("Invalid ISBN format.");
+            }
+
+            if (!isValidTitle(title)) {
+                throw new Exception("Invalid title format.");
+            }
+
+            if (!isValidAuthor(author)) {
+                throw new Exception("Invalid author format.");
+            }
+
+            if (!isValidGenre(genre)) {
+                throw new Exception("Invalid genre format.");
+            }
+
+            if (!isValidStock(stockStr)) {
+                throw new Exception("Invalid stock format.");
+            }
+
+            int stock = Integer.parseInt(stockStr);
 
             // Create a new Book object
             Book newBook = new Book(isbn, title, author, genre, publishedYear, stock);
 
-            // Add the book to the database
+            // Add the book to the database (Assuming DatabaseConnection.addBook exists)
             DatabaseConnection.addBook(newBook);
 
             // Show success message
