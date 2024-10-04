@@ -102,4 +102,23 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+
+    public static boolean deleteBook(String isbn) {
+        String deleteQuery = "DELETE FROM books WHERE isbn = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+
+            preparedStatement.setString(1, isbn);
+
+            // Execute delete query and return true if a row was affected (i.e., a book was deleted)
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;  // Return false if there was an error
+        }
+    }
+
 }
