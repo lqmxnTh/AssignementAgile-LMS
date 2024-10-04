@@ -37,21 +37,41 @@ public class DeleteBookGUI extends JFrame {
     }
 
     private void deleteBook() {
-        String isbn = isbnField.getText();
+        String isbn = isbnField.getText().trim();  // Trim any leading/trailing spaces
 
-        if (isbn.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "ISBN cannot be empty.");
+        // Validate ISBN format based on the general ISBN-13 format
+        if (!isValidISBN(isbn)) {
+            JOptionPane.showMessageDialog(this, "Invalid ISBN format. Please provide a valid ISBN.");
             return;
         }
 
-        boolean success = DatabaseConnection.deleteBook(isbn);
+        // Proceed to delete book
+        try {
+            boolean success = DatabaseConnection.deleteBook(isbn);
 
-        if (success) {
-            JOptionPane.showMessageDialog(this, "Book deleted successfully.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: Book not found or could not be deleted.");
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Book deleted successfully.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: Book not found or could not be deleted.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Database connection failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        isbnField.setText("");  // Clear the field after deletion
+        // Clear the field after deletion attempt
+        isbnField.setText("");
+    }
+
+    private boolean isValidISBN(String isbn) {
+        // Regex explanation:
+        // ^\\d{3}-        : Start with any 3 digits followed by a hyphen
+        // \\d{1}-         : One digit for the group identifier followed by a hyphen
+        // \\d{2}-         : Two digits for the publisher code followed by a hyphen
+        // \\d{6}-         : Six digits for the title identifier followed by a hyphen
+        // \\d{1}$         : One digit for the check digit at the end
+        // No spaces allowed, just digits and hyphens in the specified format.
+
+        String isbnPattern = "^\\d{3}-\\d{1}-\\d{2}-\\d{6}-\\d{1}$";
+        return isbn.matches(isbnPattern);
     }
 }
