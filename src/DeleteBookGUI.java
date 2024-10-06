@@ -51,10 +51,12 @@ public class DeleteBookGUI extends JFrame {
 
             if (success) {
                 JOptionPane.showMessageDialog(this, "Book deleted successfully.");
-            } else {
+            }
+            else {
                 JOptionPane.showMessageDialog(this, "Error: Book not found or could not be deleted.");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Database connection failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
@@ -62,7 +64,7 @@ public class DeleteBookGUI extends JFrame {
         isbnField.setText("");
     }
 
-    private boolean isValidISBN(String isbn) {
+    public boolean isValidISBN(String isbn) {
         // Regex explanation:
         // ^\\d{3}-        : Start with any 3 digits followed by a hyphen
         // \\d{1}-         : One digit for the group identifier followed by a hyphen
@@ -71,8 +73,7 @@ public class DeleteBookGUI extends JFrame {
         // \\d{1}$         : One digit for the check digit at the end
         // No spaces allowed, just digits and hyphens in the specified format.
 
-        String isbnPattern = "^\\d{3}-\\d{1}-\\d{2}-\\d{6}-\\d{1}$";
-        return isbn.matches(isbnPattern);
+        return isbn != null && isbn.matches("^\\d{3}-\\d{1}-\\d{2}-\\d{6}-\\d{1}$");
     }
 }
 
