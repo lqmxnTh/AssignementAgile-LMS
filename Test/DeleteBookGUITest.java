@@ -82,4 +82,15 @@ public class DeleteBookGUITest {
         // Assertion
         assertTrue(result, "Book with zero stock should still be deletable.");
     }
+
+    //ISBN over size limit
+    //ISBN over size limit
+    @Test
+    public void testISBNsize() {
+
+        boolean result = DatabaseConnection.deleteBook("978-3-1896-148417890-0");
+
+        // Assertion
+        assertFalse(result, "Invalid ISBN format should not delete any book.");
+    }
 }
