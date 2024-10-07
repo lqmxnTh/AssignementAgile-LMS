@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 
-public class AddBookGUI extends JFrame {
+public class AddBookTDD extends JFrame {
 
     private JTextField isbnField;
     private JTextField titleField;
@@ -14,7 +14,7 @@ public class AddBookGUI extends JFrame {
     private JDateChooser publishedYearPicker;  // Date picker
     private JTextField stockField;
 
-    public AddBookGUI() {
+    public AddBookTDD() {
         // Set the title of the window
         super("Add New Book");
 
@@ -81,29 +81,32 @@ public class AddBookGUI extends JFrame {
 
     // Method to validate ISBN
     public boolean isValidISBN(String isbn) {
-        return isbn != null && isbn.matches("[0-9-]+");
+        return isbn != null && isbn.matches("[0-9-]+") && isbn.replace("-", "").length() == 13;
     }
 
     // Method to validate Title
     public boolean isValidTitle(String title) {
-        return title != null && title.matches("[a-zA-Z0-9' ]+");
+        return title != null && title.matches("[a-zA-Z0-9' ]+") && title != " " ;
     }
 
     // Method to validate Author
     public boolean isValidAuthor(String author) {
-        return author != null && author.matches("[a-zA-Z' ]+");
+        return author != null && author.matches("[a-zA-Z-' ]+");
     }
 
     // Method to validate Genre
     public boolean isValidGenre(String genre) {
-        return genre != null && genre.matches("[a-zA-Z,' ]+");
+        return genre != null && genre.matches("[a-zA-Z-,' ]+");
     }
 
     // Method to validate Stock
     public boolean isValidStock(String stock) {
         try {
             Integer.parseInt(stock);
-            return true;
+            if (Integer.parseInt(stock) > -1) {
+                return true;
+            }
+            return false;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -148,10 +151,10 @@ public class AddBookGUI extends JFrame {
             int stock = Integer.parseInt(stockStr);
 
             // Create a new Book object
-            Book newBook = new Book(isbn, title, author, genre, publishedYear, stock);
+            BookTDD newBook = new BookTDD(isbn, title, author, genre, publishedYear, stock);
 
             // Add the book to the database (Assuming DatabaseConnection.addBook exists)
-            DatabaseConnection.addBook(newBook);
+            DatabaseConnectionTDD.addBook(newBook);
 
             // Show success message
             JOptionPane.showMessageDialog(this, "Book added successfully!");
@@ -174,5 +177,6 @@ public class AddBookGUI extends JFrame {
         publishedYearPicker.setDate(null);  // Clear the date picker
         stockField.setText("");
     }
+
 
 }

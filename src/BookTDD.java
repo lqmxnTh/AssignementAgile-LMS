@@ -1,4 +1,4 @@
-public class Book {
+public class BookTDD {
     private String isbn;
     private String title;
     private String author;
@@ -6,7 +6,7 @@ public class Book {
     private String publishedYear; // Date as String in "YYYY-MM-DD" format
     private int stock;
 
-    public Book(String isbn, String title, String author, String genre, String publishedYear, int stock) {
+    public BookTDD(String isbn, String title, String author, String genre, String publishedYear, int stock) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
@@ -15,7 +15,7 @@ public class Book {
         this.stock = stock;
     }
 
-    // Getters for the Book fields
+    // Getters for the Traditional.Book fields
     public String getIsbn() {
         return isbn;
     }
@@ -39,4 +39,16 @@ public class Book {
     public int getStock() {
         return stock;
     }
+
+    // Override toString method to display book details
+    @Override
+    public String toString() {
+        return "ISBN: " + isbn +
+                ", Title: " + title +
+                ", Author: " + author +
+                ", Genre: " + genre +
+                ", Published Year: " + publishedYear +
+                ", Stock: " + stock;
+    }
+
 }
