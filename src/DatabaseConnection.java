@@ -106,16 +106,27 @@ public class DatabaseConnection {
     public static boolean deleteBook(String isbn) {
         String deleteQuery = "DELETE FROM books WHERE isbn = ?";
 
+        if (isbn.isEmpty()) {
+            return false; // Return false if ISBN is empty
+        }
+
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
+            // Set the parameter for the prepared statement
             preparedStatement.setString(1, isbn);
 
-            // Execute delete query and return true if a row was affected (i.e., a book was deleted)
+            // Execute delete query
             int rowsAffected = preparedStatement.executeUpdate();
+
+            // Debugging info
+            System.out.println("Delete operation executed. Rows affected: " + rowsAffected);
+
+            // Return true if a row was affected (i.e., a book was deleted)
             return rowsAffected > 0;
 
         } catch (SQLException e) {
+            // Print the stack trace for debugging purposes
             e.printStackTrace();
             return false;  // Return false if there was an error
         }

@@ -49,7 +49,7 @@ public class DeleteBookGUI extends JFrame {
         if (success) {
             JOptionPane.showMessageDialog(this, "Book deleted successfully.");
         } else {
-            JOptionPane.showMessageDialog(this, "Error: Book not found or could not be deleted.");
+            JOptionPane.showMessageDialog(this, "Error: Book not found or could not be deleted."); // Message when deletion fails
         }
 
         isbnField.setText("");  // Clear the field after deletion
