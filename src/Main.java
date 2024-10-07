@@ -15,7 +15,7 @@ public class Main {
                 new AddBookGUI();
             }
             else if (choice == 1) {
-                new DeleteBookGUI();
+                new DeleteBookTDD();
             }
         }
         else {

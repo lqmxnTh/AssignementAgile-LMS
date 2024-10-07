@@ -2,11 +2,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class DeleteBookGUI extends JFrame {
+public class DeleteBookTDD extends JFrame {
 
     private JTextField isbnField;
 
-    public DeleteBookGUI() {
+    public DeleteBookTDD() {
         // Set title
         super("Delete Book");
 
@@ -37,43 +37,38 @@ public class DeleteBookGUI extends JFrame {
     }
 
     private void deleteBook() {
-        String isbn = isbnField.getText().trim();  // Trim any leading/trailing spaces
+        String isbn = isbnField.getText().trim();
 
-        // Validate ISBN format based on the general ISBN-13 format
+        // Check if the ISBN is valid
         if (!isValidISBN(isbn)) {
             JOptionPane.showMessageDialog(this, "Invalid ISBN format. Please provide a valid ISBN.");
             return;
         }
 
-        // Proceed to delete book
+        // Try to delete the book from the database
         try {
             boolean success = DatabaseConnection.deleteBook(isbn);
 
             if (success) {
                 JOptionPane.showMessageDialog(this, "Book deleted successfully.");
-            }
-            else {
+            } else {
                 JOptionPane.showMessageDialog(this, "Error: Book not found or could not be deleted.");
             }
-        }
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Database connection failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Database connection failed: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Clear the field after deletion attempt
+        // Clear the ISBN field after the operation
         isbnField.setText("");
     }
 
+    // ISBN validation logic
     public boolean isValidISBN(String isbn) {
-        // Regex explanation:
-        // ^\\d{3}-        : Start with any 3 digits followed by a hyphen
-        // \\d{1}-         : One digit for the group identifier followed by a hyphen
-        // \\d{2}-         : Two digits for the publisher code followed by a hyphen
-        // \\d{6}-         : Six digits for the title identifier followed by a hyphen
-        // \\d{1}$         : One digit for the check digit at the end
-        // No spaces allowed, just digits and hyphens in the specified format.
-
-        return isbn != null && isbn.matches("^\\d{3}-\\d{1}-\\d{2}-\\d{6}-\\d{1}$");
+        if (isbn == null || isbn.isEmpty()) {
+            return false; // Null or empty ISBN is invalid
+        }
+        return isbn.matches("^\\d{3}-\\d{1}-\\d{2}-\\d{6}-\\d{1}$"); // Valid format check
     }
 }
 

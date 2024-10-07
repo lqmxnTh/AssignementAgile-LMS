@@ -106,6 +106,18 @@ public class DatabaseConnection {
     public static boolean deleteBook(String isbn) {
         String deleteQuery = "DELETE FROM books WHERE isbn = ?";
 
+        if(isbn == null){
+            return false;
+        }
+
+        if(isbn.isEmpty()){
+            return false;
+        }
+
+        if(!isbn.matches("^\\d{3}-\\d{1}-\\d{2}-\\d{6}-\\d{1}$")){
+            return false;
+        }
+
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
@@ -120,5 +132,7 @@ public class DatabaseConnection {
             return false;  // Return false if there was an error
         }
     }
+
+
 
 }
